@@ -1,3 +1,4 @@
+import os
 import whisper
 from moviepy.editor import VideoFileClip
 
@@ -11,15 +12,18 @@ def extract_audio(file_name: str) -> str:
 
     # extract the audio from the mp4
     video = VideoFileClip(
-        f"/{file_name}"
-    )  # todo get correct path by using method to find path where executable is run
+        f"..data/input/{file_name}"
+    )  
     new_file_name = file_name.split(".")[0]
 
     # Extract the audio
     audio = video.audio
 
     # Write the audio to a file
-    audio.write_audiofile(f"../audio/{new_file_name}.mp3")
+    audio.write_audiofile(f"../input/{new_file_name}.mp3")
+
+    # delete the video file
+    os.remove(f"../data/input/{file_name}")
 
     return new_file_name
 
