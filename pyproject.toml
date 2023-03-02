@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "transcription-summarization-aleph-alpha"
+version = "0.1.0"
+description = ""
+authors = ["Marc Mezger <marc.mezger@gmail.com>"]
+readme = "README.md"
+packages = [{include = "transcription_summarization_aleph_alpha"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+aleph-alpha-client = "^2.16.0"
+streamlit = "^1.19.0"
+openai-whisper = "^20230124"
+moviepy = "^1.0.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
