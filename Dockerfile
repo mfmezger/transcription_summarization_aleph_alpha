@@ -19,4 +19,4 @@ RUN poetry install --no-root --no-dev
 
 COPY . .
 
-ENTRYPOINT [ "python" , "main.py" ]
+ENTRYPOINT ["streamlit", "run", "transcription_summarization_aleph_alpha/frontend.py", "--server.port=8001", "--server.address=0.0.0.0"]
