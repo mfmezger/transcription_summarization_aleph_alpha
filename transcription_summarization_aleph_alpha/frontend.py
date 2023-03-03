@@ -1,6 +1,6 @@
 import streamlit as st
 from transcription.transcription_service import transcribe
-from transcription.api_handler import ClientWrapper, summarize_text_using_summarize
+from transcription.api_handler import ClientWrapper, summarize_text_using_summarize, summarize_text_using_completion
 from pathlib import Path
 
 # create the folder structure
@@ -8,7 +8,7 @@ Path("../data/input").mkdir(parents=True, exist_ok=True)
 Path("../data/output").mkdir(parents=True, exist_ok=True)
 
 # make a large title
-st.title("Transcription and Summarization with Aleph Alpha")
+st.title("Transcription and Summarization Demo")
 
 def create_transcripton(file_path: str):
     """Calls the transcription method from the transcribe server, and hands the
@@ -52,12 +52,13 @@ def summarize(text, token):
     result = summarize_text_using_summarize(client_wrapper, text)
 
     # create text box to show the result
-    st.text_area("Summarization Result", result)
+    st.text_area("Summarization Result", result, height=500)
     
 
 
-# create a field to upload your aleph alpha token
-token = st.text_input("Enter your Aleph Alpha Token")
+# create a  passwort field to upload your aleph alpha token
+token = st.text_input("Enter your Aleph Alpha Token", type="password")
+
 
 # upload a file that can either be mp3 or wav or mp4
 uploaded_file = st.file_uploader("Choose a file", type=["mp3", "wav", "mp4"])
@@ -71,5 +72,8 @@ if uploaded_file is not None:
 # initialize a start button if the start button gets called the function transcribe will be called
 if st.button("Start"):
     TEXT = create_transcripton("../data/input/" + uploaded_file.name)
+    # display the text
+    st.text_area("Transcription Result", TEXT,  height=500)
+
     # start the summarization
     summarize(text=TEXT, token=token)

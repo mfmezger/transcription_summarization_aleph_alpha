@@ -50,7 +50,7 @@ class ClientWrapper:
     def complete(self, prompt, model="luminous-extended"):
         request = CompletionRequest(
             prompt=Prompt.from_text(prompt),
-            maximum_tokens=200,
+            maximum_tokens=200, stop_sequences=["\n", "###"]
         )
         response = self.client.complete(request, model=model)
 
@@ -104,22 +104,16 @@ def summarize_text_using_completion(client_wrapper: ClientWrapper, text: str):
     """
     multiple_splits = False
     # if the text is longer than 400 words we need to split it into multiple prompts
-    if len(text.split(" ")) > 400:
+    if len(text.split(" ")) > 200:
         # use the sliding window method.
         # split the text into 5 sentences
         text_split = sliding_window_text(text, amount_of_sentences=5)
         multiple_splits = True
 
-    # first generate the prompt
-    text_prompt = """This app gives a short summary from a narrative perspective in German.
-        ###
-        Text: Albert Einstein (* 14. März 1879 in Ulm, Königreich Württemberg; † 18. April 1955 in Princeton, New Jersey) war ein gebürtiger deutscher Physiker mit (ab 1901) Schweizer und (ab 1940) US-amerikanischer Staatsbürgerschaft. Er gilt als einer der bedeutendsten Physiker der Wissenschaftsgeschichte[1] und weltweit als einer der bekanntesten Wissenschaftler der Neuzeit.[2] Seine Forschungen zur Struktur von Materie, Raum und Zeit sowie zum Wesen der Gravitation veränderten maßgeblich das zuvor geltende newtonsche Weltbild. Einsteins Hauptwerk, die Relativitätstheorie, machte ihn weltberühmt. Im Jahr 1905 erschien seine Arbeit mit dem Titel Zur Elektrodynamik bewegter Körper, deren Inhalt heute als Spezielle Relativitätstheorie bezeichnet wird. 1915 publizierte er die Allgemeine Relativitätstheorie. Auch zur Quantenphysik leistete er wesentliche Beiträge. „Für seine Verdienste um die Theoretische Physik, besonders für seine Entdeckung des Gesetzes des photoelektrischen Effekts“, erhielt er den Nobelpreis des Jahres 1921, der ihm 1922 überreicht wurde. Seine theoretischen Arbeiten spielten – im Gegensatz zur weit verbreiteten Meinung – beim Bau der Atombombe und der Entwicklung der Kernenergie nur eine indirekte Rolle.
-        Zusammenfassung: Albert Einstein war ein Physiker mit deutscher und US Staatsbürgerschaft. Er ist einer der bedeutendsten Physiker der Geschichte. Sein Hauptwerk ist die Relativitätstheorie, die er 1915 publizierte.
-        ###
-        Text: In Amerika leben über eine Milliarde Menschen. Ein Großteil der Bevölkerungen Amerikas setzt sich aus Einwanderern zusammen, weshalb die Länder als Einwanderungsländer bezeichnet werden. Die größten Einzelstaaten des Kontinents sind Kanada, die Vereinigten Staaten, Brasilien, Argentinien und Mexiko. In diesen Ländern befinden sich auch die größten Ballungszentren Amerikas: New York City, São Paulo, Mexiko-Stadt, Los Angeles und Buenos Aires.
-        Zusammenfassung: In Amerika lebt eine Milliarde Menschen, ein großteil der Bevölkerung setzt sich aus Einwanderen zusammen. Die größten Staaten sind Kanada, USA und Brasilien.
-        ###
-        Text:"""
+    # load the prompt from the text file
+    with open("prompt.txt", "r") as f:
+        text_prompt = f.read()
+
     client_wrapper.initialize_client(token=client_wrapper.token)
 
     if multiple_splits:
