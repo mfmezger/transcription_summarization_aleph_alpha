@@ -1,7 +1,16 @@
-import streamlit as st
-from transcription.transcription_service import transcribe
-from transcription.api_handler import ClientWrapper, summarize_text_using_summarize, summarize_text_using_completion
+"""Frontend Script for the Transcription and Summarization Demo.
+
+Author: Marc Fabian Mezger
+Date: March 2023
+"""
 from pathlib import Path
+
+import streamlit as st
+from transcription.api_handler import (  # , summarize_text_using_completion
+    ClientWrapper,
+    summarize_text_using_summarize,
+)
+from transcription.transcription_service import transcribe
 
 # create the folder structure
 Path("../data/input").mkdir(parents=True, exist_ok=True)
@@ -9,6 +18,7 @@ Path("../data/output").mkdir(parents=True, exist_ok=True)
 
 # make a large title
 st.title("Transcription and Summarization Demo")
+
 
 def create_transcripton(file_path: str):
     """Calls the transcription method from the transcribe server, and hands the
@@ -20,22 +30,20 @@ def create_transcripton(file_path: str):
     """
     text = transcribe(file_name=file_path)
     print(file_path)
-    tmp_path = file_path.split('.')[2]
+    tmp_path = file_path.split(".")[2]
     # join the list to a string
     print(tmp_path)
-    tmp_path = tmp_path.split('/')[-1]
+    tmp_path = tmp_path.split("/")[-1]
     print(tmp_path)
     # save the text to the folder data/output
-    with open(f"../data/output/{tmp_path}.txt", "w") as f:
-        f.write(text)
-    
+    with open(f"../data/output/{tmp_path}.txt", "w") as tmp_file:
+        tmp_file.write(text)
     st.write("SUCCESS: Transcription was created")
-
     # return the path to the file
     return text
 
 
-def summarize(text, token):
+def summarize(text: str, token: str):
     """This method calls the summarization service from the api handler script.
 
     :param text: _description_
@@ -44,16 +52,14 @@ def summarize(text, token):
     :type token: _type_
     """
     # First initialize the Aleph Alpha Connector Client
-    if token == "":
+    if len(token) == 0:
         st.write("ERROR: Please enter a valid Aleph Alpha Token")
     client_wrapper = ClientWrapper(token)
-
 
     result = summarize_text_using_summarize(client_wrapper, text)
 
     # create text box to show the result
     st.text_area("Summarization Result", result, height=500)
-    
 
 
 # create a  passwort field to upload your aleph alpha token
@@ -73,7 +79,7 @@ if uploaded_file is not None:
 if st.button("Start"):
     TEXT = create_transcripton("../data/input/" + uploaded_file.name)
     # display the text
-    st.text_area("Transcription Result", TEXT,  height=500)
+    st.text_area("Transcription Result", TEXT, height=500)
 
     # start the summarization
     summarize(text=TEXT, token=token)

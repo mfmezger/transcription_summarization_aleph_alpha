@@ -12,4 +12,3 @@ services:
     # expose the port 8001
     ports:
       - "8001:8001"
-
