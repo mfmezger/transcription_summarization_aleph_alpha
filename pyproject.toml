@@ -12,8 +12,6 @@ aleph-alpha-client = "^2.16.0"
 streamlit = "^1.19.0"
 openai-whisper = "^20230124"
 moviepy = "^1.0.3"
-torch = [{markers = "sys_platform == 'macos'", url = "https://download.pytorch.org/whl/cpu/torch-1.13.0-cp310-none-macosx_11_0_arm64.whl"},
-{markers = "sys_platform == 'linux'", url="https://download.pytorch.org/whl/torch-1.13.0-cp310-cp310-manylinux2014_aarch64.whl"}]
 
 [build-system]
 requires = ["poetry-core"]

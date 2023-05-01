@@ -8,7 +8,7 @@ This Project show how to transcribe a audio or video using OpenAI Whisper a AI m
 
 ### Installation as a Docker Container
 
-If you want to use the application as a docker container you only need Docker installed.
+If you want to use the application as a docker container you need Docker installed.
 
 ### Installation directly on your device
 
@@ -31,9 +31,9 @@ poetry shell
 
 ## How to use
 
-### Docker variant 
+### Docker variant
 
-To start the application just start this command.
+To start the application start this command.
 
 ```
 docker-compose up --build -d

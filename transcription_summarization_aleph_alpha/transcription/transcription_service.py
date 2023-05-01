@@ -1,10 +1,10 @@
+import logging
 import os
+
 import whisper
 from moviepy.editor import VideoFileClip
-import logging
 
 logger = logging.getLogger(__name__)
-
 
 
 def extract_audio(file_name: str) -> str:
@@ -16,9 +16,7 @@ def extract_audio(file_name: str) -> str:
 
     # extract the audio from the mp4
     logging.info(file_name)
-    video = VideoFileClip(
-        f"{file_name}"
-    )  
+    video = VideoFileClip(f"{file_name}")
     new_file_name = file_name.split(".")[0]
 
     # Extract the audio

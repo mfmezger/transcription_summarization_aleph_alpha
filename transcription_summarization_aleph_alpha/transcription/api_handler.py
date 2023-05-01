@@ -1,5 +1,3 @@
-import re
-
 from aleph_alpha_client import (
     Client,
     CompletionRequest,
@@ -48,10 +46,7 @@ class ClientWrapper:
         self.client = Client(token=token)
 
     def complete(self, prompt, model="luminous-extended"):
-        request = CompletionRequest(
-            prompt=Prompt.from_text(prompt),
-            maximum_tokens=200, stop_sequences=["\n", "###"]
-        )
+        request = CompletionRequest(prompt=Prompt.from_text(prompt), maximum_tokens=200, stop_sequences=["\n", "###"])
         response = self.client.complete(request, model=model)
 
         return response.completions[0].completion
@@ -111,7 +106,7 @@ def summarize_text_using_completion(client_wrapper: ClientWrapper, text: str):
         multiple_splits = True
 
     # load the prompt from the text file
-    with open("prompt.txt", "r") as f:
+    with open("prompt.txt") as f:
         text_prompt = f.read()
 
     client_wrapper.initialize_client(token=client_wrapper.token)
