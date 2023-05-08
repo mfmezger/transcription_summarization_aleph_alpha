@@ -36,7 +36,7 @@ def transcribe(file_name: str):
     if file_name.split(".")[-1] == "mp4":
 
         file_name = extract_audio(file_name=file_name)
-    model = whisper.load_model("base")
+    model = whisper.load_model("large")
     whisper.DecodingOptions(language="de", without_timestamps=False)
 
     result = model.transcribe(f"{file_name}")  # , task = 'translate'
