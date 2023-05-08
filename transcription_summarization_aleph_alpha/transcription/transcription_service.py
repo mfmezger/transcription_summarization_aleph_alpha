@@ -31,7 +31,7 @@ def extract_audio(file_name: str) -> str:
     return new_file_name
 
 
-def transcribe(file_name: str):
+def transcribe(file_name: str) -> str:
     # first check if the input is a video or a audio by checking the ending
     if file_name.split(".")[-1] == "mp4":
 
